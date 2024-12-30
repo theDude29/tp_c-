@@ -7,11 +7,9 @@
 
 #include "../header/Obstacle.h"
 #include "../header/Bird.h"
+#include "../header/Predator.h"
 
 using namespace std;
-
-int const WIDTH = 1600;
-int const HEIGHT = 900;
 
 struct global_t {
 	SDL_Window * window = NULL;
@@ -54,18 +52,29 @@ int main(int argc, char ** argv)
 	obstacles.push_back(new Obstacle(0,0,size,HEIGHT));
 	obstacles.push_back(new Obstacle(0,HEIGHT-size,WIDTH,size));
 
+	float max_rotation_speed = 3.14*0.01;
+	float speed = 1.5;
 	vector<Bird*> birds;
-	birds.push_back(new Bird(500, 500, 30, 1,1,1, {1,0}));
-	birds.push_back(new Bird(500, 800, 30, 1,1,1, {1,0}));
-	birds.push_back(new Bird(800, 500, 30, 1,1,1, {1,0}));
+	birds.push_back(new Bird(500, 500, 30, speed,1,max_rotation_speed, {-1,1}));
+	birds.push_back(new Bird(500, 800, 30, speed,1,max_rotation_speed, {1,0}));
+	birds.push_back(new Bird(800, 500, 30, speed,1,max_rotation_speed, {1,0}));
+	birds.push_back(new Bird(100, 500, 30, speed,1,max_rotation_speed, {1,0}));
+	birds.push_back(new Bird(0, 200, 30, speed,3,max_rotation_speed, {1,0}));
+	birds.push_back(new Bird(100, 700, 30, speed,1,max_rotation_speed, {1,0}));
 	for(auto& bird : birds) {bird->setFriends(birds); bird->setObstacles(obstacles);}
+	
+	vector<Predator*> predators;
+	predators.push_back(new Predator(0, 0, 40, speed*1.1,1,max_rotation_speed*0.9, {0,1}));
+	for(auto& predator : predators) {predator->setPreys(birds);}
 
 	vector<Entity*> entities;
 	entities.insert(entities.end(), obstacles.begin(), obstacles.end());
 	entities.insert(entities.end(), birds.begin(), birds.end());
+	entities.insert(entities.end(), predators.begin(), predators.end());
 	
 	vector<MovingEntity*> movingEntities;
 	movingEntities.insert(movingEntities.end(), birds.begin(), birds.end());
+	movingEntities.insert(movingEntities.end(), predators.begin(), predators.end());
 
 	int status;
 
@@ -134,6 +143,7 @@ int main(int argc, char ** argv)
 	
 	for (auto& obstacle : obstacles) delete obstacle;
 	for (auto& bird : birds) delete bird;
+	for (auto& predator : predators) delete predator;
 	
 	return 0;
 }
