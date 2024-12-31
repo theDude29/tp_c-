@@ -1,62 +1,67 @@
 #ifndef UTILS
 #define UTILS
 
-int const WIDTH = 1600;
-int const HEIGHT = 900;
+struct Division_by_zero_error{};
 
-struct Float2 {
-	float x;
-	float y;
+template<typename T>
+struct num2 {
+	T x;
+	T y;
 	
-	Float2 operator+(Float2 b) {
+	num2 operator+(num2 b) {
 		return {x+b.x,y+b.y};
 	};
 	
-	Float2 operator-(Float2 b) {
+	num2 operator-(num2 b) {
 		return {x-b.x,y-b.y};
 	};
 	
-	Float2 operator+=(Float2 b) {
+	num2 operator+=(num2 b) {
 		x += b.x;
 		y += b.y;
 		return *this;
 	};
 	
-	Float2 operator-=(Float2 b) {
+	num2 operator-=(num2 b) {
 		x -= b.x;
 		y -= b.y;
 		return *this;
 	};
 	
-	Float2 operator/(float b) {
+	num2 operator/(T b) {
 		return {x/b,y/b};
 	};
 	
-	Float2 operator*(float b) {
+	num2 operator*(T b) {
 		return {x*b,y*b};
 	};
 	
-	Float2 operator/=(float b) {
+	num2 operator/=(T b) {
 		x /= b;
 		y /= b;
 		return *this;
 	};
 	
-	Float2 operator*=(float b) {
+	num2 operator*=(T b) {
 		x *= b;
 		y *= b;
 		return *this;
 	};
 	
-	Float2& normalize() {
+	num2& normalize() {
 		if(x*x + y*y > 0) {
 			x /= sqrt(x*x + y*y);
 			y /= sqrt(x*x + y*y);
+			
+			return *this;
 		}
-		return *this;
+		
+		else {
+			throw Division_by_zero_error{};
+		}
 	};
 	
-	float norme() {
+	T norme() {
 		return sqrt(x*x+y*y);
 	}
 };

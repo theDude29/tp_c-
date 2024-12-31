@@ -8,11 +8,11 @@
 class Entity {
 	public:
 		Entity(float x, float y, float size_x, float size_y);
-		virtual void draw(SDL_Renderer * renderer);
-		Float2 getPosition();
+		virtual void draw(SDL_Renderer * renderer) =0;
+		num2<float> getPosition();
 	protected:
-		Float2 position;
-		Float2 size;
+		num2<float> position;
+		num2<float> size;
 };
 
 #endif

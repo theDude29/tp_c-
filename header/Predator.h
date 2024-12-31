@@ -7,7 +7,7 @@
 
 class Predator : public MovingEntity {
 	public:
-		Predator(float x, float y, float size, float max_speed, float max_acceleration, float max_rotation_speed, Float2 direction);
+		Predator(float x, float y, float size, float max_speed, float max_rotation_speed, num2<float> direction);
 		void updatePosition();
 		void setPreys(std::vector<Bird*> friends);
 		void draw(SDL_Renderer * renderer);
